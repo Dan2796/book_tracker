@@ -1,3 +1,5 @@
+let library = [];
+
 function Book(title, author, pages, read) {
   this.title = title;
   this.author = author;
@@ -10,12 +12,26 @@ function Book(title, author, pages, read) {
   };
 }
 
+function addBookToLibrary(book) {
+  library.push(book);
+}
+
 const theHobbit = new Book(
   'The Hobbit',
   'J.R.R Tolkien',
   295,
   false,
 );
+
+const aGameOfThrones = new Book(
+  'A Game of Thrones',
+  'George R. R. Martin',
+  694,
+  true,
+)
+
+addBookToLibrary(theHobbit);
+addBookToLibrary(aGameOfThrones);
 
 // "The Hobbit by J.R.R. Tolkien, 295 pages, not read yet"
 // console.log(theHobbit.info());
