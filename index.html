@@ -7,10 +7,22 @@
    <link rel="stylesheet" href="style.css">    
 </head>
 <body>
-  <div class="header">
-    <h1>Library</h1> 
+  <div class="notForm">
+    <div class="header">
+      <button class="add-new-book">Add new book</button>
+      <h1>Library</h1> 
+    </div>
+    <div class="main">
+    </div>
   </div>
-  <div class="main">
-  </div>
+  <form action="submit" class="addBookForm hidden">
+    <label for="title">Book title:</label>
+    <input type="text" name="title" id="title" required>
+    <label for="title">Author:</label>
+    <input type="text" name="author" id="author" required>
+    <label for="title">Pages:</label>
+    <input type="tel" name="pages" id="pages" required>
+    <button type="submit" class="submit-new-book">Add book.</button>
+  </form>
 </body>
 </html>

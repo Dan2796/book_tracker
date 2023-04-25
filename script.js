@@ -1,15 +1,18 @@
 const main = document.querySelector('.main');
-let myLibrary = [];
+const submitNewBookButton = document.querySelector('.submit-new-book');
+const addBookForm = document.querySelector('.addBookForm');
+const notForm = document.querySelector('.notForm');
+const addNewBookButton = document.querySelector('.add-new-book');
+const myLibrary = [];
 
 function Book(title, author, pages, read) {
   this.title = title;
   this.author = author;
   this.pages = pages;
   this.read = read;
-
-  const readMessage = read ? 'already read' : 'not read yet';
+  this.readMessage = read ? 'already read' : 'not read yet';
   this.info = function returnInfo() {
-    return `${this.title} by ${this.author}, ${this.pages} pages, ${readMessage}.`;
+    return `${this.title} by ${this.author}, ${this.pages} pages, ${this.readMessage}.`;
   };
 }
 
@@ -29,7 +32,7 @@ const aGameOfThrones = new Book(
   'George R. R. Martin',
   694,
   true,
-)
+);
 
 addBookToLibrary(theHobbit);
 addBookToLibrary(aGameOfThrones);
@@ -42,11 +45,34 @@ function addCard(book) {
 }
 
 function displayLibrary(library) {
+  // start by removing existing cards
+  const elements = document.getElementsByClassName('card');
+  while (elements.length > 0) {
+    elements[0].parentNode.removeChild(elements[0]);
+  }
   library.forEach((book) => {
     addCard(book);
   });
 }
 
 displayLibrary(myLibrary);
-// "The Hobbit by J.R.R. Tolkien, 295 pages, not read yet"
-// console.log(theHobbit.info());
+
+submitNewBookButton.addEventListener('click', (e) => {
+  e.preventDefault();
+  const newBook = new Book(
+    document.getElementById('title').value,
+    document.getElementById('author').value,
+    document.getElementById('pages').value,
+  );
+  addBookToLibrary(newBook);
+  addBookForm.reset();
+  addBookForm.classList.add('hidden');
+  notForm.classList.remove('blurred');
+  displayLibrary(myLibrary);
+});
+
+addNewBookButton.addEventListener('click', () => {
+  addBookForm.classList.remove('hidden');
+  notForm.classList.add('blurred');
+  document.getElementById('title').focus();
+});
