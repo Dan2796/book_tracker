@@ -10,11 +10,14 @@ body {
 
 .add-new-book {
   background-color: #e6beae;
+  color: #605c5c;
   position: absolute;
   top: 10px;
   left: 10px;
-  width: 100px;
-  height: 100px;
+  width: 16vh;
+  height: 16vh;
+  font-weight: 700;
+  font-size: 2rem;
 }
 
 .header {
@@ -28,6 +31,7 @@ body {
 h1 {
   margin: 0;
   color: white;
+  font-size: 4rem;
 }
 
 .main {
@@ -41,8 +45,14 @@ h1 {
   background-color: #eee4e1;
   color: #605c5c;
   border-radius: 10px;
-  height: 300px;
-  padding: 10px;
+  min-height: 300px;
+  padding: 40px;
+  font-family: cursive;
+  font-size: 1.5rem;
+}
+
+.book-title {
+  font-weight: 700;
 }
 
 form {
@@ -60,6 +70,9 @@ form {
   text-align: center;
   background-color: #e6beae;
   border-radius: 10px;
+  display: grid;
+  grid-template-columns: 100px 1fr;
+  gap: 20px;
 }
 
 .hidden {

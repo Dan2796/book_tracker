@@ -3,6 +3,7 @@ const submitNewBookButton = document.querySelector('.submit-new-book');
 const addBookForm = document.querySelector('.addBookForm');
 const notForm = document.querySelector('.notForm');
 const addNewBookButton = document.querySelector('.add-new-book');
+const cancelButton = document.querySelector('.cancel');
 const myLibrary = [];
 
 function Book(title, author, pages, read) {
@@ -10,37 +11,25 @@ function Book(title, author, pages, read) {
   this.author = author;
   this.pages = pages;
   this.read = read;
-  this.readMessage = read ? 'already read' : 'not read yet';
-  this.info = function returnInfo() {
-    return `${this.title} by ${this.author}, ${this.pages} pages, ${this.readMessage}.`;
-  };
+  this.readMessage = read ? 'Already read.' : 'Not yet read';
 }
-
-function addBookToLibrary(book) {
-  myLibrary.push(book);
-}
-
-const theHobbit = new Book(
-  'The Hobbit',
-  'J.R.R Tolkien',
-  295,
-  false,
-);
-
-const aGameOfThrones = new Book(
-  'A Game of Thrones',
-  'George R. R. Martin',
-  694,
-  true,
-);
-
-addBookToLibrary(theHobbit);
-addBookToLibrary(aGameOfThrones);
 
 function addCard(book) {
   const card = document.createElement('div');
   card.className = 'card';
-  card.textContent = book.info();
+  const title = document.createElement('p');
+  title.textContent = book.title;
+  title.classList.add('book-title');
+  const author = document.createElement('p');
+  author.textContent = `by ${book.author}`;
+  const pages = document.createElement('p');
+  pages.textContent = `${book.pages} pages`;
+  const read = document.createElement('p');
+  read.textContent = book.readMessage;
+  card.appendChild(title);
+  card.appendChild(author);
+  card.appendChild(pages);
+  card.appendChild(read);
   main.appendChild(card);
 }
 
@@ -55,6 +44,23 @@ function displayLibrary(library) {
   });
 }
 
+// add example books at the start so it isn't an empty screen:
+const theHobbit = new Book(
+  'The Hobbit',
+  'J.R.R Tolkien',
+  295,
+  false,
+);
+
+const aGameOfThrones = new Book(
+  'A Game of Thrones',
+  'George R. R. Martin',
+  694,
+  true,
+);
+
+myLibrary.push(theHobbit);
+myLibrary.push(aGameOfThrones);
 displayLibrary(myLibrary);
 
 submitNewBookButton.addEventListener('click', (e) => {
@@ -63,8 +69,9 @@ submitNewBookButton.addEventListener('click', (e) => {
     document.getElementById('title').value,
     document.getElementById('author').value,
     document.getElementById('pages').value,
+    document.getElementById('read').checked,
   );
-  addBookToLibrary(newBook);
+  myLibrary.push(newBook);
   addBookForm.reset();
   addBookForm.classList.add('hidden');
   notForm.classList.remove('blurred');
@@ -75,4 +82,10 @@ addNewBookButton.addEventListener('click', () => {
   addBookForm.classList.remove('hidden');
   notForm.classList.add('blurred');
   document.getElementById('title').focus();
+});
+
+cancelButton.addEventListener('click', () => {
+  addBookForm.classList.add('hidden');
+  notForm.classList.remove('blurred');
+  addBookForm.reset();
 });
