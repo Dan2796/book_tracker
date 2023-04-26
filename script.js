@@ -1,6 +1,5 @@
 const main = document.querySelector('.main');
 const form = document.querySelector('form');
-const submitNewBookButton = document.querySelector('.submit-new-book');
 const addBookForm = document.querySelector('.addBookForm');
 const notForm = document.querySelector('.notForm');
 const addNewBookButton = document.querySelector('.add-new-book');
@@ -13,10 +12,14 @@ function Book(title, author, pages, read) {
   this.pages = pages;
   this.pagesMessage = (pages === '' ? 'Unknown' : pages);
   this.read = read;
-  this.readMessage = (read ? 'Already read' : 'Not yet read');
+  this.readMessage = function writeReadMessage() {
+    if (this.read) return 'Already read';
+    return 'Not yet read';
+  };
 }
 
-function addCard(book) {
+function addCardFromIndex(index, library) {
+  const book = library[index];
   const card = document.createElement('div');
   card.className = 'card';
   const title = document.createElement('p');
@@ -27,11 +30,21 @@ function addCard(book) {
   const pages = document.createElement('p');
   pages.textContent = `${book.pagesMessage} pages`;
   const read = document.createElement('p');
-  read.textContent = book.readMessage;
+  read.textContent = book.readMessage();
+  const toggleRead = document.createElement('button');
+  toggleRead.className = 'toggle-read';
+  toggleRead.textContent = 'Toggle read';
+  toggleRead.dataset.index = index;
+  const removeButton = document.createElement('button');
+  removeButton.className = 'remove-button';
+  removeButton.textContent = 'Remove';
+  removeButton.dataset.index = index;
   card.appendChild(title);
   card.appendChild(author);
   card.appendChild(pages);
   card.appendChild(read);
+  card.appendChild(toggleRead);
+  card.appendChild(removeButton);
   main.appendChild(card);
 }
 
@@ -41,8 +54,29 @@ function displayLibrary(library) {
   while (elements.length > 0) {
     elements[0].parentNode.removeChild(elements[0]);
   }
-  library.forEach((book) => {
-    addCard(book);
+  // using for loop rather than foreach so the remove and readToggle buttons can be indexed
+  for (let i = 0; i < library.length; i += 1) {
+    addCardFromIndex(i, library);
+  }
+
+  /* I added event listeners here because otherwise have to call displayLibrary
+  inside the addCardFromIndex function, and better not to have two functions
+  that call each other since one will inevitably have to call the other
+  before it is defined */
+  const removeButtons = document.querySelectorAll('.remove-button');
+  removeButtons.forEach((button) => {
+    button.addEventListener('click', () => {
+      library.splice(button.getAttribute('data-index'), 1);
+      displayLibrary(library);
+    });
+  });
+  const toggleReadButtons = document.querySelectorAll('.toggle-read');
+  toggleReadButtons.forEach((button) => {
+    button.addEventListener('click', () => {
+      const book = library[button.getAttribute('data-index')];
+      book.read = !book.read;
+      displayLibrary(library);
+    });
   });
 }
 
