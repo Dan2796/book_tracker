@@ -1,4 +1,5 @@
 const main = document.querySelector('.main');
+const form = document.querySelector('form');
 const submitNewBookButton = document.querySelector('.submit-new-book');
 const addBookForm = document.querySelector('.addBookForm');
 const notForm = document.querySelector('.notForm');
@@ -10,8 +11,9 @@ function Book(title, author, pages, read) {
   this.title = title;
   this.author = author;
   this.pages = pages;
+  this.pagesMessage = (pages === '' ? 'Unknown' : pages);
   this.read = read;
-  this.readMessage = read ? 'Already read.' : 'Not yet read';
+  this.readMessage = (read ? 'Already read' : 'Not yet read');
 }
 
 function addCard(book) {
@@ -23,7 +25,7 @@ function addCard(book) {
   const author = document.createElement('p');
   author.textContent = `by ${book.author}`;
   const pages = document.createElement('p');
-  pages.textContent = `${book.pages} pages`;
+  pages.textContent = `${book.pagesMessage} pages`;
   const read = document.createElement('p');
   read.textContent = book.readMessage;
   card.appendChild(title);
@@ -63,7 +65,7 @@ myLibrary.push(theHobbit);
 myLibrary.push(aGameOfThrones);
 displayLibrary(myLibrary);
 
-submitNewBookButton.addEventListener('click', (e) => {
+form.addEventListener('submit', (e) => {
   e.preventDefault();
   const newBook = new Book(
     document.getElementById('title').value,
