@@ -6,16 +6,22 @@ const addNewBookButton = document.querySelector('.add-new-book');
 const cancelButton = document.querySelector('.cancel');
 const myLibrary = [];
 
-function Book(title, author, pages, read) {
-  this.title = title;
-  this.author = author;
-  this.pages = pages;
-  this.pagesMessage = (pages === '' ? 'Unknown' : pages);
-  this.read = read;
-  this.readMessage = function writeReadMessage() {
+class Book {
+  constructor(title, author, pages, read) {
+    this.title = title;
+    this.author = author;
+    this.pages = pages;
+    this.read = read;
+  }
+
+  get pagesMessage() {
+    return this.pages === '' ? 'Unknown' : this.pages;
+  }
+
+  readMessage() {
     if (this.read) return 'Already read';
     return 'Not yet read';
-  };
+  }
 }
 
 function addCardFromIndex(index, library) {
